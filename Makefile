@@ -1,5 +1,5 @@
 # Dlib dependency
-DLIB_PATH := /path/dlib-19.0
+DLIB_PATH := /path/dlib-19.2
 INC_PATH := -I$(DLIB_PATH)
 LIB := $(DLIB_PATH)/examples/build/dlib_build/libdlib.a
 
