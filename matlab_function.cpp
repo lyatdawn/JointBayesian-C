@@ -30,6 +30,49 @@ DataVec rowsum_cpp(const DataMat& data) {
   return result;
 }
 
+Dtype norm_cpp(const DataMat& mat) {
+  Dtype result = 0;
+  const int nr = mat.nr();
+  for (int i = 0; i < nr; ++i) {
+    result += sum(squared(rowm(mat, i)));
+  }
+  return sqrt(result);
+}
+
+DataMat repmat_cpp(const DataMat& A, const int M, const int N) {
+  const int m_ = A.nr();
+  const int n_ = A.nc();
+
+  DataMat result;
+  result.set_size(M * m_, N * n_);
+
+  for (int m = 0; m < M; m++) {
+    for (int n = 0; n < N; n++) {
+      set_subm(result, range(m * m_, (m + 1) * m_ - 1),
+        range(n * n_, (n + 1) * n_ - 1)) = A;
+    }
+  }
+
+  return result;
+}
+
+DataMat cov_cpp(const DataMat& input) { 
+  const int col_num=input.nc();
+  const int row_num=input.nr();
+  
+  DataMat output(col_num, col_num);
+  DataRowVec result_sum_col(col_num);
+  result_sum_col=colsum_cpp(input);
+
+  DataRowVec result_ave_col(col_num);
+  for(int i=0; i<col_num; i++){
+    result_ave_col(i)=result_sum_col(i)/row_num;
+  }
+ 
+  output = input - repmat_cpp(result_ave_col,row_num,1);
+
+  return trans(output)*output/double(row_num-1);
+}
 
 void pca_dlib_cpp(DataMat input, DataMat& COEFF, DataMat& SCORE){
      
@@ -208,7 +251,7 @@ int find(int *a, int size, int num)
 }
 
 
-int find_cpp(const IntVec& labels, const int& ii, int &lab)
+int find_first_cpp(const IntVec& labels, const int& ii, int &lab)
 {
 	double* label = new double[labels.size()];
 	for(int i = 0; i < labels.size(); i++){
@@ -240,6 +283,18 @@ int find_cpp(const IntVec& labels, const int& ii, int &lab)
 
 }
 
+IntVec find_cpp(const IntVec& vec, const int &ii){
+  std::vector<int> tmp_vec;
+  tmp_vec.clear();
+  for (int i = 0; i < vec.size(); ++i) {
+    if (vec(i) ==ii) {
+      tmp_vec.push_back(i);
+    }
+  }
+  IntVec result = mat(tmp_vec.data(), tmp_vec.size());
+  
+  return result;
+}
 
 IntRowVec randperm_cpp(const int N, const int m) {
   IntRowVec result(1, m);

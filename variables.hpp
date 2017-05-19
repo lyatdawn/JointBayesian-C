@@ -8,6 +8,7 @@
 #include <stdio.h>
 #include <cstdlib>
 #include <time.h> 
+#include <math.h>
 #include <dlib/matrix.h>
 #include <dlib/statistics/statistics.h>
 

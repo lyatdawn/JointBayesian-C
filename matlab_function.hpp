@@ -9,6 +9,12 @@ DataRowVec colsum_cpp(const DataMat& data);
 
 DataVec rowsum_cpp(const DataMat& data);
 
+Dtype norm_cpp(const DataMat& mat);
+
+DataMat repmat_cpp(const DataMat& A, const int M, const int N);
+
+DataMat cov_cpp(const DataMat& input);
+
 void pca_dlib_cpp(DataMat input, DataMat& COEFF, DataMat& SCORE);
 
 DataMat double_cpp(DataMat& input);
@@ -21,7 +27,9 @@ void accuracyCompute(const DataVec& group_train, const DataVec& training, const 
 
 int find(int *a, int size, int num);
 
-int find_cpp(const IntVec& labels, const int& ii, int &lab);
+int find_first_cpp(const IntVec& labels, const int& ii, int &lab);
+
+IntVec find_cpp(const IntVec& vec, const int &ii);
 
 IntRowVec randperm_cpp(const int N, const int m);
 

@@ -1,8 +1,11 @@
 #include "matlab_function.hpp"
+#include "JointBayesian.hpp"
 #include "loadData.hpp"
 
 using namespace dlib;
 using namespace std;
+
+const int iter = 500;
 
 int main()
 {
@@ -60,10 +63,13 @@ int main()
  	// [mappedX, mapping] = JointBayesian(train_x, labels);
 	// JointBayesian(train_x, labels, mapping_A, mapping_G, iter);
     DataMat  mapping_A = zeros_matrix<Dtype>(mapping_A_nr, mapping_A_nc);
-    LoadDataFromFile(train_filename_mapping_A, mapping_A);
+    // LoadDataFromFile(train_filename_mapping_A, mapping_A);
     
     DataMat  mapping_G = zeros_matrix<Dtype>(mapping_G_nr, mapping_G_nc);
-    LoadDataFromFile(train_filename_mapping_G, mapping_G);
+    // LoadDataFromFile(train_filename_mapping_G, mapping_G); 
+	// You can use JointBayesian.cpp training the mapping_A and mapping_G. 
+    
+    JointBayesian(train_x, labels, mapping_A, mapping_G, iter);
     
     // [classes, bar, labels] = unique(labels);
 	IntVec classes; 
@@ -77,7 +83,7 @@ int main()
     for(int i = 0; i < nc; i++){
         IntRowVec a = randperm_cpp(sum(labels == (i+1)), 2);
         int c = 0;
-        find_cpp(labels, i+1, c);
+        find_first_cpp(labels, i+1, c);
         IntRowVec b = randperm_cpp(sum(labels == (i+1)), 2);
         
         train_Intra(2 * i, 0) = a(0) + c;

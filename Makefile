@@ -1,12 +1,12 @@
 # Dlib dependency
-DLIB_PATH := /path/dlib-19.2
+DLIB_PATH := /home/ly/dlib-19.2
 INC_PATH := -I$(DLIB_PATH)
 LIB := $(DLIB_PATH)/examples/build/dlib_build/libdlib.a
 
 # Basic parameters
 CXX = g++
 
-CXX_FLAGS =  -DUSE_AVX_INSTRUCTIONS -DUSE_SSE2_INSTRUCTIONS -DUSE_SSE4_INSTRUCTIONS 
+CXX_FLAGS = -std=c++11 -DUSE_AVX_INSTRUCTIONS -DUSE_SSE2_INSTRUCTIONS -DUSE_SSE4_INSTRUCTIONS 
 
 LINK_FLAGS =  -lglog 
 
@@ -18,7 +18,7 @@ else
     CXX_FLAGS += -O2
 endif
 
-SRC= matlab_function.cpp loadData.cpp test_main.cpp JointBayesian.cpp
+SRC= matlab_function.cpp loadData.cpp test_main.cpp JointBayesian.cpp 
 OBJ = $(SRC:.cpp=.o)
 
 test: $(OBJ)
